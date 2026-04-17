@@ -2,33 +2,20 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" href="../style.css" />
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Contact Page</title>
   </head>
   <body>
-    <nav>
-      <ul class="navbar">
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="../projects/index.html">Projects</a></li>
-        <li>
-          <a class="current"><b>Contact Me</b></a>
-        </li>
-        <li><a href="../resume/index.html">Resume</a></li>
-
-        <li>
-          <a href="https://github.com/Argsweet" target="_blank">Github</a>
-        </li>
-      </ul>
-    </nav>
-
     <h1>Contact Me</h1>
 
-    <form action="mailto:aguiditta@ucsd.edu" method="POST" enctype="text/plain">
-      <label>Email: <input name="email" type="email" /></label>
+    <form action="mailto:aguiditta@ucsd.edu" method="GET">
       <label>Subject: <input name="subject" /></label>
       <label>Body: <textarea name="body"></textarea></label>
       <button>Submit</button>
     </form>
+
+    <script src="../global.js"></script>
   </body>
 </html>
