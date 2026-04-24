@@ -19,6 +19,30 @@ label.color-scheme {
   font-size: 80%;
 }
 
+dl {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 0;
+  padding: 0;
+}
+
+dt {
+  grid-row: 1;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary); /* muted label */
+  margin: 0 0 4px;
+}
+
+dd {
+  grid-row: 2;
+  font-size: 28px;
+  font-weight: 400;
+  margin: 0;
+  color: var(--color-text-primary); /* full contrast value */
+}
+
 input,
 textarea,
 button,
@@ -101,6 +125,13 @@ article {
   grid-row: span 3;
 
   gap: 1em;
+}
+
+article img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  aspect-ratio: 16 / 9;
 }
 
 h2 {
@@ -193,4 +224,23 @@ blockquote {
 section:last-of-type p {
   font-size: 0.9rem;
   margin-bottom: 0.25rem;
+}
+
+body > h2 {
+  margin-top: 2rem;
+}
+
+body > h2 {
+  margin-bottom: 2rem;
+}
+
+.intro {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2rem;
+  align-items: start;
+}
+
+.intro img {
+  max-width: 300px;
 }
