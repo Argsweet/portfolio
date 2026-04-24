@@ -2,31 +2,31 @@
   {
     "title": "League of Legends 15-Minute Statistical Analysis",
     "description": "A data science project analyzing 2025 Oracle's Elixir competitive LoL data to predict match outcomes from early game statistics alone. Uses permutation testing, random forest classification, and fairness analysis to explore whether gold, XP, and kill differentials at 15 minutes determine the course of professional matches.",
-    "image": "/images/Lol.png",
+    "image": "/portfolio/images/Lol.png",
     "year": 2026,
     "url": "https://argsweet.github.io/League-of-Legends-15-Min-Analysis/"
   },
   {
     "title": "Rotten Tomato Critics Sentiment Analysis",
-    "image": "/images/rt.webp",
+    "image": "/portfolio/images/rt.webp",
     "description": "A sentiment analysis project comparing critic and audience reviews scraped from Rotten Tomatoes across five films. Uses natural language processing to examine tone, word frequency, and rating extremity — exploring whether professional critics are more measured in their language than everyday viewers.",
     "year": 2025
   },
   {
     "title": "Audio Processing & Speech Transcription Limits",
     "description": "An object-oriented Python project building an AudioProcessor class that modifies .wav files through pitch, speed, noise, echo, and trimming. Explores how far audio can be distorted before speech-to-text transcription breaks down — and how accuracy degrades with intensity.",
-    "image": "/images/audio.webp",
+    "image": "/portfolio/images/audio.webp",
     "year": 2025
   },
   {
     "title": "Mental Illness & Alzheimer's Prediction",
-    "image": "/images/alz.png",
+    "image": "/portfolio/images/alz.png",
     "year": 2023,
     "description": "A group machine learning project investigating whether Alzheimer's diagnosis can be predicted from mental illness severity and socio-demographic factors. Compared Random Forest, KNN, and Naive Bayes classifiers — finding KNN achieved the highest accuracy at 82.1% using age, weight, height, education, and symptom severity as key predictors."
   },
   {
     "title": "MeowMates",
-    "image": "/images/meow.png",
+    "image": "/portfolio/images/meow.png",
     "year": 2023,
     "description": "A Tinder-style web app where you can swipe through adoptable cats. Swipe right to learn more about each cat and access adoption info."
   },
@@ -46,7 +46,7 @@
     "description": "\n          Veritatis molestiae dolorum temporibus alias ad, amet id? Rerum\n          recusandae rem minus ipsa eius! Amet optio doloribus sit ullam dolorem\n          iure architecto facere et laudantium itaque. Repellendus, ullam.\n          Dolore, eligendi.\n        "
   },
   {
-    "title": "Exercitationem itaque iusto laudantium.",
+    "title": "Exercitationem itaque iusto laudandium.",
     "image": "https://vis-society.github.io/labs/2/images/empty.svg",
     "description": "\n          Laudantium, expedita voluptatum nesciunt odio molestias animi\n          repellendus, officiis beatae deleniti corrupti pariatur saepe eligendi\n          voluptate ullam deserunt iure. Est natus velit odit dolores esse, at\n          quaerat eaque ipsa nostrum.\n        "
   },
