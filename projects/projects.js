@@ -102,11 +102,16 @@ searchInput.addEventListener("input", (event) => {
       .toLowerCase()
       .includes(query.toLowerCase());
 
-    let matchesYear = selectedYear === null || project.year === selectedYear; // ✅ fixed
+    let matchesYear = selectedYear === null || project.year === selectedYear;
 
     return matchesQuery && matchesYear;
   });
 
   renderProjects(filteredProjects, projectsContainer, "h2");
-  renderPieChart(filteredProjects);
+
+  if (query === "") {
+    renderPieChart(projects);
+  } else {
+    renderPieChart(filteredProjects);
+  }
 });
