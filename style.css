@@ -54,10 +54,6 @@ ul.navbar {
   display: contents;
 }
 
-li {
-  display: contents;
-}
-
 nav {
   display: flex;
   margin-bottom: 1rem;
@@ -243,4 +239,64 @@ body > h2 {
 
 .intro img {
   max-width: 300px;
+}
+
+/*d3 onwards */
+
+#projects-pie-plot {
+  max-width: 20em;
+  margin-block: 2em;
+  overflow: visible;
+
+  &:has(path:hover) {
+    path:not(:hover) {
+      opacity: 0.5;
+    }
+  }
+}
+path {
+  transition: 300ms;
+}
+
+.swatch {
+  width: 1em;
+  height: 1em;
+  background-color: var(--color);
+  border-radius: 50%;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: 2em;
+}
+
+.legend {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5em;
+  list-style: none;
+  padding: 1em;
+  border: 1px solid #ccc;
+}
+
+.selected {
+  --color: oklch(60% 45% 0) !important;
+
+  &:is(path) {
+    fill: var(--color);
+  }
+}
+
+path {
+  cursor: pointer;
 }
