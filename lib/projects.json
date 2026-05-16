@@ -31,10 +31,11 @@
     "description": "A Tinder-style web app where you can swipe through adoptable cats. Swipe right to learn more about each cat and access adoption info."
   },
   {
-    "title": "Animi deleniti quo suscipit?",
-    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-    "description": "\n          Voluptatibus ad fuga quaerat molestias, atque ipsum voluptatem tenetur\n          aspernatur dolore adipisci totam rerum obcaecati et qui quia\n          laudantium, explicabo cumque! Sunt ea, sint nisi eveniet aliquid\n          dolorem nemo doloremque.\n        ",
-    "year": 2024
+    "title": "Boston By Bike",
+    "image": "/portfolio/images/bike.png",
+    "description": "An interactive geospatial visualization exploring BlueBike traffic patterns across the Boston area. The project combines real-world bike lane infrastructure and ride data to reveal how cycling activity changes by location, direction, and time of day through dynamic Mapbox-based visualizations.",
+    "year": 2026,
+    "url": "https://argsweet.github.io/Boston-By-Bike/"
   },
   {
     "title": "Quo ad repellat modi!",
