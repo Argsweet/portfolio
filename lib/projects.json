@@ -7,6 +7,14 @@
     "url": "https://argsweet.github.io/League-of-Legends-15-Min-Analysis/"
   },
   {
+    "title": "A Country on Fire",
+    "image": "/portfolio/images/fire.png",
+    "year": 2026,
+    "url": "https://argsweet.github.io/Wildfires/",
+
+    "description": "Statewise wildfire intensity (FRP – Fire Radiative Power) and fire count (MODIS satellite detections). Comparison between the two maps highlight a key difference between the South and West: throughout the years, the South has seen more frequent wildfires, while the West has seen more intense wildfires."
+  },
+  {
     "title": "Rotten Tomato Critics Sentiment Analysis",
     "image": "/portfolio/images/rt.webp",
     "description": "A sentiment analysis project comparing critic and audience reviews scraped from Rotten Tomatoes across five films. Uses natural language processing to examine tone, word frequency, and rating extremity — exploring whether professional critics are more measured in their language than everyday viewers.",
@@ -37,45 +45,39 @@
     "year": 2026,
     "url": "https://argsweet.github.io/Boston-By-Bike/"
   },
-  {
-    "title": "Quo ad repellat modi!",
-    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-    "year": 2024,
 
-    "description": "\n          Ab iusto quis dolores animi! Nihil officia officiis dolores eos hic\n          quam quo veritatis. Perspiciatis, corrupti dolorem. Quos eos, culpa\n          inventore amet velit illum voluptate repudiandae qui, eligendi\n          aspernatur placeat.\n        "
-  },
   {
     "title": "Doloribus maxime inventore nesciunt!",
     "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-    "year": 2024,
+    "year": 2020,
 
     "description": "\n          Veritatis molestiae dolorum temporibus alias ad, amet id? Rerum\n          recusandae rem minus ipsa eius! Amet optio doloribus sit ullam dolorem\n          iure architecto facere et laudantium itaque. Repellendus, ullam.\n          Dolore, eligendi.\n        "
   },
   {
     "title": "Exercitationem itaque iusto laudandium.",
     "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-    "year": 2024,
+    "year": 2020,
 
     "description": "\n          Laudantium, expedita voluptatum nesciunt odio molestias animi\n          repellendus, officiis beatae deleniti corrupti pariatur saepe eligendi\n          voluptate ullam deserunt iure. Est natus velit odit dolores esse, at\n          quaerat eaque ipsa nostrum.\n        "
   },
   {
     "title": "Facere autem ad obcaecati!",
     "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-    "year": 2024,
+    "year": 2020,
 
     "description": "\n          Maxime facilis laudantium error dolores nesciunt voluptatem quas,\n          perspiciatis fugit incidunt praesentium aspernatur saepe modi nisi\n          veritatis consequuntur quae officiis eaque provident facere alias\n          labore nihil, obcaecati deleniti. Quis, quam?\n        "
   },
   {
     "title": "Ipsa exercitationem vel consequuntur.",
     "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-    "year": 2024,
+    "year": 2020,
 
     "description": "\n          Rem maiores iusto nemo iure repellat fugiat praesentium expedita omnis\n          quas! Possimus suscipit commodi animi voluptates aut, laboriosam\n          delectus ut nisi, deserunt voluptatibus architecto tenetur asperiores\n          eaque quo dolor fuga.\n        "
   },
   {
     "title": "Rem corrupti magnam molestias!",
     "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-    "year": 2024,
+    "year": 2020,
 
     "description": "\n          Ipsum inventore ad sunt deserunt impedit dicta, neque animi reiciendis\n          doloribus fuga obcaecati aliquam facilis, quidem dignissimos eaque\n          quisquam debitis at a, ullam voluptatem? Quis rerum libero\n          exercitationem perspiciatis placeat.\n        "
   }
