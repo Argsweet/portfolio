@@ -1,4 +1,5 @@
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm";
+import scrollama from "https://cdn.jsdelivr.net/npm/scrollama@3.2.0/+esm";
 
 async function loadData() {
   const data = await d3.csv("loc.csv", (row) => ({
@@ -39,7 +40,8 @@ function processCommits(data) {
       });
 
       return ret;
-    });
+    })
+    .sort((a, b) => a.datetime - b.datetime);
 }
 
 function renderCommitInfo(data, commits) {
@@ -321,6 +323,7 @@ let commitMaxTime = timeScale.invert(commitProgress);
 
 const commitProgressInput = document.getElementById("commit-progress");
 const commitTime = document.getElementById("commit-time");
+
 let colors = d3.scaleOrdinal(d3.schemeTableau10);
 
 let filteredCommits = commits;
@@ -456,3 +459,128 @@ function updateCommitInfo(data, filteredCommits) {
   dl.append("dt").text("Max lines");
   dl.append("dd").text(d3.max(filteredCommits, (d) => d.totalLines));
 }
+
+// adding text to the commits!
+
+d3.select("#scatter-story")
+  .selectAll(".step")
+  .data(commits)
+  .join("div")
+  .attr("class", "step")
+  .html(
+    (d, i) => `
+		On ${d.datetime.toLocaleString("en", {
+      dateStyle: "full",
+      timeStyle: "short",
+    })},
+		I made <a href="${d.url}" target="_blank">${
+      i > 0 ? "another glorious commit" : "my first commit, and it was glorious"
+    }</a>.
+		I edited ${d.totalLines} lines across ${
+      d3.rollups(
+        d.lines,
+        (D) => D.length,
+        (d) => d.file,
+      ).length
+    } files.
+		Then I looked over all I had made, and I saw that it was very good.
+	`,
+  );
+
+function onStepEnter(response) {
+  const stepCommit = response.element.__data__;
+
+  if (!stepCommit || !stepCommit.datetime) {
+    console.log("Bad step:", response.element, stepCommit);
+    return;
+  }
+
+  commitMaxTime = stepCommit.datetime;
+  commitProgressInput.value = timeScale(commitMaxTime);
+
+  commitTime.textContent = commitMaxTime.toLocaleString("en-US", {
+    dateStyle: "short",
+    timeStyle: "short",
+  });
+
+  filteredCommits = commits.filter((d) => d.datetime <= commitMaxTime);
+
+  updateScatterPlot(data, filteredCommits);
+  updateFileDisplay(filteredCommits);
+  updateCommitInfo(data, filteredCommits);
+}
+
+const scroller = scrollama();
+scroller
+  .setup({
+    container: "#scrolly-1",
+    step: "#scrolly-1 .step",
+  })
+  .onStepEnter(onStepEnter);
+
+// extra
+
+d3.select("#files-story")
+  .selectAll(".step")
+  .data(commits)
+  .join("div")
+  .attr("class", "step")
+  .html((d) => {
+    const fileCount = d3.rollups(
+      d.lines,
+      (D) => D.length,
+      (d) => d.file,
+    ).length;
+
+    const languages = [...new Set(d.lines.map((l) => l.type))];
+
+    return `
+      By ${d.datetime.toLocaleString("en", {
+        dateStyle: "full",
+      })},
+      the project had expanded into
+      <strong>${fileCount} files</strong>.
+
+      This commit touched
+      <strong>${d.totalLines} lines of code</strong>
+      across ${languages.length} technologies:
+      ${languages.join(", ")}.
+
+      Some files were beginning to stabilize,
+      while others were rewritten constantly.
+  `;
+  });
+
+function onFilesStepEnter(response) {
+  const stepCommit = response.element.__data__;
+
+  if (!stepCommit || !stepCommit.datetime) {
+    console.log("Bad files step:", response.element, stepCommit);
+    return;
+  }
+
+  commitMaxTime = stepCommit.datetime;
+
+  if (commitProgressInput) {
+    commitProgressInput.value = timeScale(commitMaxTime);
+  }
+
+  commitTime.textContent = commitMaxTime.toLocaleString("en-US", {
+    dateStyle: "short",
+    timeStyle: "short",
+  });
+
+  filteredCommits = commits.filter((d) => d.datetime <= commitMaxTime);
+
+  updateFileDisplay(filteredCommits);
+  updateCommitInfo(data, filteredCommits);
+}
+
+const filesScroller = scrollama();
+
+filesScroller
+  .setup({
+    container: "#scrolly-2",
+    step: "#scrolly-2 .step",
+  })
+  .onStepEnter(onFilesStepEnter);
