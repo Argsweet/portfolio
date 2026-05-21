@@ -321,7 +321,46 @@ let commitMaxTime = timeScale.invert(commitProgress);
 
 const commitProgressInput = document.getElementById("commit-progress");
 const commitTime = document.getElementById("commit-time");
+let colors = d3.scaleOrdinal(d3.schemeTableau10);
+
 let filteredCommits = commits;
+
+function updateFileDisplay(filteredCommits) {
+  let lines = filteredCommits.flatMap((d) => d.lines);
+
+  let files = d3
+    .groups(lines, (d) => d.file)
+    .map(([name, lines]) => {
+      return { name, lines };
+    })
+    .sort((a, b) => b.lines.length - a.lines.length);
+
+  let filesContainer = d3
+    .select("#files")
+    .selectAll("div")
+    .data(files, (d) => d.name)
+    .join(
+      (enter) =>
+        enter.append("div").call((div) => {
+          const dt = div.append("dt");
+          dt.append("code");
+          dt.append("small");
+          div.append("dd");
+        }),
+      (update) => update,
+      (exit) => exit.remove(),
+    );
+
+  filesContainer.select("dt > code").text((d) => d.name);
+  filesContainer.select("dt > small").text((d) => `${d.lines.length} lines`);
+  filesContainer
+    .select("dd")
+    .selectAll("div")
+    .data((d) => d.lines)
+    .join("div")
+    .attr("class", "loc")
+    .attr("style", (d) => `--color: ${colors(d.type)}`);
+}
 
 function updateScatterPlot(data, commits) {
   const width = 1000;
@@ -386,7 +425,34 @@ function onTimeSliderChange() {
 
   filteredCommits = commits.filter((d) => d.datetime <= commitMaxTime);
   updateScatterPlot(data, filteredCommits);
+  updateFileDisplay(filteredCommits);
+  updateCommitInfo(data, filteredCommits);
 }
 
 commitProgressInput.addEventListener("input", onTimeSliderChange);
 onTimeSliderChange();
+
+function updateCommitInfo(data, filteredCommits) {
+  const filteredLines = filteredCommits.flatMap((d) => d.lines);
+
+  const dl = d3.select("#stats dl");
+  dl.selectAll("*").remove();
+
+  dl.append("dt").text("Commits");
+  dl.append("dd").text(filteredCommits.length);
+
+  dl.append("dt").text("Files");
+  dl.append("dd").text(d3.group(filteredLines, (d) => d.file).size);
+
+  dl.append("dt").html('Total <abbr title="Lines of code">LOC</abbr>');
+  dl.append("dd").text(filteredLines.length);
+
+  dl.append("dt").text("Max depth");
+  dl.append("dd").text(d3.max(filteredLines, (d) => d.depth));
+
+  dl.append("dt").text("Longest line");
+  dl.append("dd").text(d3.max(filteredLines, (d) => d.length));
+
+  dl.append("dt").text("Max lines");
+  dl.append("dd").text(d3.max(filteredCommits, (d) => d.totalLines));
+}
