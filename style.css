@@ -353,6 +353,9 @@ circle {
   transition: 200ms;
   transform-origin: center;
   transform-box: fill-box;
+  @starting-style {
+    r: 0;
+  }
 }
 
 circle:hover {
@@ -375,4 +378,35 @@ circle:hover {
 
 circle.selected {
   fill: #ff6b6b;
+}
+
+/* Container for the slider section */
+#slider {
+  display: flex;
+  align-items: baseline;
+  margin: 1rem 0;
+  width: 100%;
+}
+
+/* Label layout */
+.time-filter {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  width: 100%;
+  font-size: 0.95rem;
+}
+
+/* Slider styling */
+#commit-progress {
+  flex: 1;
+  cursor: pointer;
+}
+
+/* Time display pushed to the right */
+#commit-time {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  color: #555;
+  white-space: nowrap;
 }

@@ -8,6 +8,14 @@
     <title>Meta</title>
   </head>
   <body>
+    <div id="slider">
+      <label class="time-filter">
+        <span>Show commits until:</span>
+        <input id="commit-progress" type="range" min="0" max="100" value="0" />
+        <time id="commit-time"></time>
+      </label>
+    </div>
+
     <div id="stats"></div>
 
     <h2>Commits by time of day</h2>
