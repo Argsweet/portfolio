@@ -1,4 +1,10 @@
-# Portfolio Pack — how this thing works
+# Annabelle Guiditta — portfolio
+
+The site at <https://argsweet.github.io/portfolio/> is a card-pack opener; the
+earlier lab pages are still here (`home.html`, `projects/`, `resume/`, `meta/`,
+`contact/`) and reachable from the nav.
+
+## The pack opener — how this thing works
 
 A card-pack opener intro for the portfolio: drag the foil pack → it tears open
 under your hand → a card is revealed → the screen blinks → you land on the site
@@ -17,7 +23,7 @@ ES modules do not load from `file://`, so open it through a tiny local server:
 python -m http.server 8000
 ```
 
-Then visit <http://localhost:8000/tcg/>.
+Then visit <http://localhost:8000/>.
 (VS Code's "Live Server" extension does the same thing with a click.)
 
 **If an edit does not seem to take effect, hard-reload** (Ctrl+Shift+R).
@@ -26,7 +32,7 @@ cache headers to tell it otherwise — you can end up staring at an old copy of
 `data.js` wondering why nothing changed.
 
 Add a hash to skip the pack while you work on a page — `#profile`, `#projects`,
-`#about`, `#timeline`, `#gallery`, `#contact`. A hash only takes effect on a
+`#about`, `#timeline`, `#gallery`. A hash only takes effect on a
 full page load, so change the URL and refresh.
 
 ---

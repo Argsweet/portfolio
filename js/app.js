@@ -79,11 +79,15 @@ function tearOpen() {
   }, 620);                        // matches the transition in pack.css
 }
 
-/* --- which card you get: rarer cards appear less often, like a real gacha */
-const WEIGHTS = { SSR: 1, SR: 2, R: 3 };
+/* --- which card you get: every card has the same chance ------------------
+   The rarity badge (SSR/SR/R) is now purely a label, not odds. To bring
+   weighted pulls back, give each rarity a number of tickets and draw from
+   the pooled tickets instead:
+     const WEIGHTS = { SSR: 1, SR: 2, R: 3 };
+     const pool = TAB_ORDER.flatMap((k) => Array(WEIGHTS[CARDS[k].rarity]).fill(k));
+*/
 function pullRandomCard() {
-  const pool = TAB_ORDER.flatMap((k) => Array(WEIGHTS[CARDS[k].rarity] ?? 1).fill(k));
-  return pool[Math.floor(Math.random() * pool.length)];
+  return TAB_ORDER[Math.floor(Math.random() * TAB_ORDER.length)];
 }
 
 
@@ -193,6 +197,12 @@ function renderSidebar() {
           <path d="M20 14.4A8.4 8.4 0 0 1 9.6 4 8.4 8.4 0 1 0 20 14.4Z"/>
         </svg>
       </button>
+      <a href="home.html" title="Classic site" aria-label="Classic site">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4.6 10.4 12 4.4l7.4 6v8.2a1 1 0 0 1-1 1h-4.2v-5.2H9.8v5.2H5.6a1 1 0 0 1-1-1Z"/>
+        </svg>
+      </a>
       <button disabled title="Sound: coming soon" aria-label="Sound: coming soon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
              stroke-linecap="round" stroke-linejoin="round">

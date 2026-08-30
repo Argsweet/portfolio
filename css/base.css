@@ -313,6 +313,7 @@ a.btn { text-decoration: none; }
   align-items: center;
   color: var(--ink-25);
 }
+.sidebar__foot a,
 .sidebar__foot button {
   background: none;
   border: none;
@@ -321,8 +322,10 @@ a.btn { text-decoration: none; }
   padding: 0.35rem;
   transition: color 200ms;
 }
+.sidebar__foot a:hover,
 .sidebar__foot button:hover { color: var(--accent-2); }
 .sidebar__foot button[disabled] { opacity: 0.4; cursor: default; }
+.sidebar__foot a { display: grid; place-items: center; text-decoration: none; }
 .sidebar__foot svg { width: 17px; height: 17px; }
 
 /* ---------------------------------------------------------------------------
