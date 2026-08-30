@@ -1,0 +1,476 @@
+/* ============================================================================
+   base.css — tokens, reset, the stage/view switches, and the shared "angular"
+   building blocks (cut-corner frames, ornaments, buttons, sidebar, topbar).
+   ========================================================================== */
+
+:root {
+  /* --- background: deep space, faintly purple in the middle --- */
+  --bg-0: #05040c;
+  --bg-1: #0a0817;
+  --bg-2: #141130;
+
+  /* --- neutral ink --- */
+  --ink: #f6f4ff;
+  --ink-70: rgba(246, 244, 255, 0.7);
+  --ink-45: rgba(246, 244, 255, 0.45);
+  --ink-25: rgba(246, 244, 255, 0.25);
+  --line: rgba(246, 244, 255, 0.12);
+  --line-soft: rgba(246, 244, 255, 0.07);
+
+  /* --- house gold --- */
+  --gold: #f3cf7a;
+  --gold-dim: rgba(243, 207, 122, 0.35);
+
+  /* --- per-card colors; JS rewrites these on #app when the card changes,
+         which is how one stylesheet themes four different cards --- */
+  --accent: #c9a3ff;
+  --accent-2: #f3cf7a;
+
+  --font-display: "Cinzel", Georgia, serif;      /* small caps, headings */
+  --font-serif: "Cormorant Garamond", Georgia, serif; /* big display text */
+  --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* how big a corner gets cut off. The single knob for "how angular is this" */
+  --cut: 14px;
+}
+
+@property --accent   { syntax: "<color>"; inherits: true; initial-value: #c9a3ff; }
+@property --accent-2 { syntax: "<color>"; inherits: true; initial-value: #f3cf7a; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+
+body {
+  font-family: var(--font-ui);
+  color: var(--ink);
+  background: var(--bg-0);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+#app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 90% at 50% 0%, var(--bg-2) 0%, var(--bg-1) 45%, var(--bg-0) 100%);
+  user-select: none;
+  -webkit-user-select: none;
+  transition: --accent 400ms linear, --accent-2 400ms linear;
+}
+
+#starfield { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
+/* ---------------------------------------------------------------------------
+   THE TWO RULES THAT RUN THE WHOLE APP.
+   A stage/view is hidden unless #app's data-stage / data-view matches it.
+   ------------------------------------------------------------------------- */
+.stage { position: absolute; inset: 0; display: none; z-index: 1; }
+#app[data-stage="pack"]    .stage--pack,
+#app[data-stage="tearing"] .stage--pack    { display: flex; }
+#app[data-stage="card"]    .stage--card    { display: flex; }
+#app[data-stage="profile"] .stage--profile { display: flex; }
+
+.view { display: none; flex: 1; min-height: 0; overflow-y: auto; }
+#app[data-view="profile"]  .view--profile  { display: grid; }
+#app[data-view="projects"] .view--projects { display: grid; }
+#app[data-view="timeline"] .view--timeline { display: block; }
+#app[data-view="gallery"]  .view--gallery  { display: block; }
+#app[data-view="about"]    .view--about    { display: block; }
+#app[data-view="contact"]  .view--contact  { display: block; }
+
+.stage--pack { flex-direction: column; align-items: center; justify-content: center; gap: 3rem; }
+.stage--card { align-items: center; justify-content: center; }
+
+/* ---------------------------------------------------------------------------
+   ANGULAR FRAME — the shape that gives the whole site its look.
+   The outer element is the 1px border color, ::before is the fill inset by
+   1px, and both share the same cut-corner clip-path. That is how you draw a
+   border on a non-rectangular shape: two stacked shapes, one slightly smaller.
+   ------------------------------------------------------------------------- */
+.frame {
+  position: relative;
+  clip-path: polygon(
+    var(--cut) 0, 100% 0,
+    100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%,
+    0 100%, 0 var(--cut)
+  );
+  background: linear-gradient(160deg,
+    color-mix(in srgb, var(--accent) 45%, transparent),
+    rgba(255, 255, 255, 0.08) 40%,
+    rgba(255, 255, 255, 0.04));
+}
+.frame::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  clip-path: inherit;
+  background: linear-gradient(170deg, rgba(18, 16, 38, 0.92), rgba(7, 6, 16, 0.96));
+  backdrop-filter: blur(4px);
+}
+.frame > * { position: relative; z-index: 1; }
+
+/* --- hairline ornaments ------------------------------------------------- */
+.ornament {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 1rem 0;
+  font-size: 0.6rem;
+  color: var(--accent-2);
+}
+.ornament span {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line), transparent);
+}
+.mark { color: var(--accent-2); font-size: 0.75em; }
+
+.rule { display: flex; align-items: center; gap: 0.6rem; color: var(--accent-2); font-size: 0.6rem; }
+.rule span { width: 84px; height: 1px; background: linear-gradient(90deg, var(--gold-dim), transparent); }
+
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1.6rem 0 0.9rem;
+  font-family: var(--font-ui);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.section-head::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--line), transparent);
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-ui);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+/* --- buttons ------------------------------------------------------------ */
+.btn {
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: none;
+  color: var(--ink-70);
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  transition: color 200ms, background 200ms, box-shadow 200ms;
+}
+.btn svg { width: 15px; height: 15px; }
+
+/* cut-corner outline button */
+.btn--ghost,
+.btn--wide,
+.btn--pack {
+  --cut: 9px;
+  position: relative;
+  padding: 0.8rem 1.6rem;
+  clip-path: polygon(
+    var(--cut) 0, 100% 0,
+    100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%,
+    0 100%, 0 var(--cut)
+  );
+  background: color-mix(in srgb, var(--accent) 32%, transparent);
+}
+.btn--ghost::before,
+.btn--wide::before,
+.btn--pack::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  clip-path: inherit;
+  background: linear-gradient(180deg, rgba(20, 18, 42, 0.9), rgba(8, 7, 18, 0.95));
+  z-index: -1;
+}
+.btn--ghost:hover,
+.btn--wide:hover,
+.btn--pack:hover {
+  color: var(--ink);
+  background: var(--accent);
+  box-shadow: 0 0 24px -6px var(--accent);
+}
+.btn--wide { width: 100%; max-width: 340px; margin-top: 1.8rem; }
+.btn--pack { padding: 0.7rem 1.3rem; font-size: 0.65rem; }
+.btn.is-disabled { opacity: 0.45; pointer-events: none; }
+a.btn { text-decoration: none; }
+
+.btn--text {
+  color: var(--ink-25);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  padding: 0.4rem;
+}
+.btn--text:hover { color: var(--ink-70); }
+
+/* --- the drag hint under the pack -------------------------------------- */
+.hint {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 0.66rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--ink-45);
+  transition: opacity 250ms;
+}
+.hint__arrow { animation: nudge 1.6s ease-in-out infinite; }
+@keyframes nudge {
+  0%, 100% { transform: translateX(0); opacity: 0.5; }
+  50%      { transform: translateX(7px); opacity: 1; }
+}
+
+/* ---------------------------------------------------------------------------
+   SIDEBAR
+   ------------------------------------------------------------------------- */
+.stage--profile { display: none; }
+#app[data-stage="profile"] .stage--profile { display: flex; }
+
+.sidebar {
+  width: 116px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--line-soft);
+  background: linear-gradient(180deg, rgba(10, 8, 22, 0.85), rgba(5, 4, 12, 0.9));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 0 1.2rem;
+  z-index: 2;
+}
+
+.sidebar__logo {
+  display: grid;
+  place-items: center;
+  margin-bottom: 2rem;
+  filter: drop-shadow(0 0 14px rgba(243, 207, 122, 0.45));
+}
+
+.sidebar__nav { display: flex; flex-direction: column; width: 100%; }
+
+.sidebar__btn {
+  position: relative;
+  width: 100%;
+  padding: 1rem 0 0.9rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  color: var(--ink-45);
+  cursor: pointer;
+  font-family: var(--font-ui);
+  font-size: 0.56rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: color 220ms, background 220ms;
+}
+.sidebar__btn svg { width: 22px; height: 22px; }
+.sidebar__btn:hover { color: var(--ink-70); background: rgba(255, 255, 255, 0.03); }
+
+/* active item: accent bar on the left + a soft wash, like the mockup */
+.sidebar__btn.is-active {
+  color: var(--accent-2);
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--accent) 26%, transparent), transparent 85%);
+}
+.sidebar__btn.is-active::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+.sidebar__foot {
+  margin-top: auto;
+  display: flex;
+  gap: 0.9rem;
+  align-items: center;
+  color: var(--ink-25);
+}
+.sidebar__foot button {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0.35rem;
+  transition: color 200ms;
+}
+.sidebar__foot button:hover { color: var(--accent-2); }
+.sidebar__foot button[disabled] { opacity: 0.4; cursor: default; }
+.sidebar__foot svg { width: 17px; height: 17px; }
+
+/* ---------------------------------------------------------------------------
+   TOPBAR + TABS
+   ------------------------------------------------------------------------- */
+.panel { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1.3rem 2.4rem;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.tabs { display: flex; align-items: center; gap: 0.4rem; overflow-x: auto; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+
+.tab {
+  position: relative;
+  background: none;
+  border: none;
+  padding: 0.5rem 1.1rem 0.8rem;
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--ink-45);
+  cursor: pointer;
+  transition: color 220ms;
+}
+.tab:hover { color: var(--ink-70); }
+.tab.is-active { color: var(--tab-accent, var(--accent)); }
+
+/* underline that scales in from the left, with a diamond at its midpoint */
+.tab::after {
+  content: "";
+  position: absolute;
+  left: 0.6rem; right: 0.6rem;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--tab-accent, var(--accent)), transparent);
+  transform: scaleX(0);
+  transition: transform 320ms var(--ease-out);
+}
+.tab.is-active::after { transform: scaleX(1); }
+.tab.is-active::before {
+  content: "◆";
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  transform: translateX(-50%);
+  font-size: 0.42rem;
+  color: var(--tab-accent, var(--accent));
+}
+
+.tabs__sep { color: var(--gold-dim); font-size: 0.5rem; }
+
+/* --- shared chip rows --------------------------------------------------- */
+.chips, .tagrow { display: flex; flex-wrap: wrap; gap: 0.45rem; list-style: none; }
+.chips li, .tagrow li {
+  --cut: 6px;
+  font-size: 0.65rem;
+  color: var(--ink-70);
+  padding: 0.4rem 0.8rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--line);
+  clip-path: polygon(
+    var(--cut) 0, 100% 0,
+    100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%,
+    0 100%, 0 var(--cut)
+  );
+  transition: background 200ms, color 200ms;
+}
+.chips li:hover, .tagrow li:hover {
+  background: color-mix(in srgb, var(--accent) 26%, transparent);
+  color: var(--ink);
+}
+.tagrow--tight li { font-size: 0.6rem; padding: 0.3rem 0.6rem; }
+
+/* --- scrollbars --------------------------------------------------------- */
+.view::-webkit-scrollbar { width: 8px; }
+.view::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); }
+.view::-webkit-scrollbar-track { background: transparent; }
+
+/* Respect people who get motion sick. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* "dim the glow" toggle in the sidebar footer — one class, whole-page effect */
+#app.is-dim { filter: saturate(0.85) brightness(0.82); }
+
+/* ---------------------------------------------------------------------------
+   SOCIAL LINKS — bottom-right corner of the site.
+   Same cut-corner shape as every other frame, tinted by the active card.
+   ------------------------------------------------------------------------- */
+.social {
+  position: absolute;
+  right: 1.5rem;
+  bottom: 1.2rem;
+  z-index: 6;
+  display: flex;
+  gap: 0.6rem;
+}
+
+.social a {
+  --cut: 8px;
+  position: relative;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  color: var(--ink-45);
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+  clip-path: polygon(
+    var(--cut) 0, 100% 0,
+    100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%,
+    0 100%, 0 var(--cut)
+  );
+  transition: color 220ms, background 220ms, transform 220ms var(--ease-out);
+}
+/* the fill sits 1px inside, so the parent reads as a hairline border */
+.social a::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  clip-path: inherit;
+  background: linear-gradient(160deg, rgba(20, 18, 42, 0.92), rgba(8, 7, 18, 0.96));
+  z-index: -1;
+}
+.social a svg { width: 17px; height: 17px; }
+
+.social a:hover,
+.social a:focus-visible {
+  color: var(--accent-2);
+  background: var(--accent);
+  transform: translateY(-3px);
+}
+
+@media (max-width: 820px) {
+  .social { right: 0.9rem; bottom: 0.8rem; }
+  .social a { width: 34px; height: 34px; }
+}

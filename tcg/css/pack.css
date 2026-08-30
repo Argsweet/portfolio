@@ -1,0 +1,313 @@
+/* ============================================================================
+   pack.css — the foil pack: crimped edges, glossy folds, and a tear that
+   follows your hand.
+
+   The pack is drawn twice (see the <template> in index.html). Both copies are
+   clipped along the SAME jagged line — one keeps what is above it, one keeps
+   what is below. Move them apart and the pack rips. Everything is driven by
+   --drag-progress (0 to 1), which js/drag.js writes as you swipe.
+   ========================================================================== */
+
+.pack-scene {
+  position: relative;
+  perspective: 1200px;
+  display: grid;
+  place-items: center;
+}
+
+/* the thin vertical shaft of light behind the pack */
+.pack-beam {
+  position: absolute;
+  top: -46%;
+  bottom: -46%;
+  width: 2px;
+  background: linear-gradient(180deg,
+    transparent, rgba(190, 150, 255, 0.85) 25%, rgba(150, 110, 255, 0.5) 50%,
+    rgba(190, 150, 255, 0.85) 75%, transparent);
+  filter: blur(1.5px);
+  opacity: 0.75;
+  animation: beam-pulse 4s ease-in-out infinite;
+}
+@keyframes beam-pulse {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 0.9; }
+}
+
+/* the faint ring the pack floats inside */
+.pack-halo {
+  position: absolute;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  border: 1px solid rgba(180, 150, 255, 0.16);
+  box-shadow: inset 0 0 90px rgba(140, 100, 255, 0.12);
+}
+
+/* the bloom on the "floor" under the pack */
+.pack-shadow {
+  position: absolute;
+  bottom: -108px;
+  width: 190px;
+  height: 26px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(190, 140, 255, 0.55), transparent 70%);
+  filter: blur(7px);
+}
+
+/* ---------------------------------------------------------------------------
+   THE PACK
+   ------------------------------------------------------------------------- */
+.pack {
+  position: relative;
+  width: 252px;
+  height: 448px;   /* matches the artwork's 256x455 aspect ratio */
+  cursor: grab;
+  transform-style: preserve-3d;
+  will-change: transform;
+  /* leans into the pull a little; the real motion is in the two parts */
+  transform:
+    rotateY(calc(var(--drag-progress, 0) * 7deg))
+    rotateZ(calc(var(--drag-progress, 0) * 1.5deg));
+  animation: float 5s ease-in-out infinite;
+}
+.pack:active { cursor: grabbing; }
+.pack:focus-visible { outline: 1px solid var(--gold); outline-offset: 14px; }
+
+/* while the cut is being made: no float, no easing — the foil opens exactly
+   as far as the hand has moved, with no lag between them */
+.pack.is-cutting { animation: none; }
+.pack.is-cutting .pack__part,
+.pack.is-cutting .pack__rip,
+.pack.is-cutting .pack__cutter { transition: none; }
+
+/* hand lifted: the flap settles, but the pack keeps floating. It does NOT
+   close — half-cut foil stays half cut. */
+.pack.is-resting .pack__part { transition: transform 420ms var(--ease-out); }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-12px); }
+}
+
+/* --- the two torn parts -------------------------------------------------- */
+.pack__part {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+  transition: transform 120ms linear, opacity 400ms ease;
+  /* the shadow lives here, not on the image: it has to fall outside the
+     silhouette, and .pack__face is masked to the silhouette exactly */
+  filter: drop-shadow(0 24px 42px rgba(120, 70, 220, 0.5));
+}
+
+/* the jagged rip line, ~21% down — just under the top crimp.
+   Top part keeps everything ABOVE the zigzag... */
+.pack__part--top {
+  clip-path: polygon(
+    0 0, 100% 0, 100% 20%,
+    88% 23%, 76% 19.5%, 64% 23.5%, 52% 20%,
+    40% 24%, 28% 20%, 16% 23.5%, 0 21%
+  );
+  /* hinged at the left edge, so the strip lifts away from the corner your
+     swipe started at instead of sliding sideways as a whole */
+  transform-origin: 0% 100%;
+  transform:
+    translate(calc(var(--drag-progress, 0) * 26px), calc(var(--drag-progress, 0) * -34px))
+    rotate(calc(var(--drag-progress, 0) * 15deg));
+}
+/* ...and the bottom part keeps everything BELOW it. */
+.pack__part--bottom {
+  clip-path: polygon(
+    0 21%, 16% 23.5%, 28% 20%, 40% 24%, 52% 20%,
+    64% 23.5%, 76% 19.5%, 88% 23%, 100% 20%,
+    100% 100%, 0 100%
+  );
+  transform: translateY(calc(var(--drag-progress, 0) * 5px));
+}
+
+/* ---------------------------------------------------------------------------
+   THE CUT.
+   scaleX from the left edge means the glowing seam is exactly as long as the
+   swipe has been — the light appears *behind* your finger as it travels, the
+   way a cut opens. (Before, the whole width lit up at once, which read as a
+   line hanging in the air rather than an opening pack.)
+   opacity is calc(progress * 10) on purpose: opacity clamps at 1, so the seam
+   reaches full brightness almost immediately and then just grows.
+   ------------------------------------------------------------------------- */
+.pack__rip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 20.5%;
+  height: 2px;
+  background: linear-gradient(90deg, #ffe9b8, #ffffff 45%, #e4d0ff);
+  transform-origin: left center;
+  transform: scaleX(var(--drag-progress, 0))
+             scaleY(calc(1 + var(--drag-progress, 0) * 1.6));
+  opacity: calc(var(--drag-progress, 0) * 10);
+  filter: blur(0.6px);
+  box-shadow: 0 0 16px 3px rgba(255, 236, 190, 0.6);
+  transition: transform 420ms var(--ease-out), opacity 320ms ease;
+  pointer-events: none;
+}
+
+/* the bright point riding the leading edge of the cut, with its spark halo */
+.pack__cutter {
+  position: absolute;
+  top: 20.5%;
+  left: calc(var(--drag-progress, 0) * 100%);
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fffdf5 0 18%, rgba(255, 226, 160, 0.75) 38%, transparent 70%);
+  /* visible only mid-cut: fades in instantly, fades out as the cut completes */
+  opacity: calc(min(var(--drag-progress, 0) * 12, 1) - max(var(--drag-progress, 0) * 6 - 5, 0));
+  filter: blur(0.4px);
+  box-shadow: 0 0 22px 6px rgba(255, 226, 160, 0.55);
+  transition: left 420ms var(--ease-out), opacity 320ms ease;
+  pointer-events: none;
+}
+.pack__cutter::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.5), transparent 65%);
+  animation: spark 1.1s ease-in-out infinite;
+}
+@keyframes spark {
+  0%, 100% { transform: scale(0.8); opacity: 0.55; }
+  50%      { transform: scale(1.25); opacity: 1; }
+}
+
+/* the light that blooms out of the opening once the cut is complete */
+.pack-burst {
+  position: absolute;
+  top: 20.5%;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 248, 224, 0.95) 0 8%,
+              rgba(255, 226, 160, 0.55) 22%, rgba(190, 150, 255, 0.35) 45%, transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* when the state machine says "tearing", the parts leave the screen */
+/* ---------------------------------------------------------------------------
+   THE OPENING — what happens once the cut is all the way across.
+
+   The order matters, and it is the order the real game uses: the torn strip
+   leaves first, THEN light floods out of the opening, and the pack fades
+   inside that light. Nothing is allowed to outlive the pack — the seam, the
+   cutter, the beam and the halo all go with it, or you get a glowing line
+   left hanging in empty space.
+   ------------------------------------------------------------------------- */
+#app[data-stage="tearing"] .pack { animation: none; }
+
+/* the torn strip flicks away */
+#app[data-stage="tearing"] .pack__part--top {
+  transition: transform 520ms var(--ease-out), opacity 380ms ease 140ms;
+  transform: translate(150px, -330px) rotate(28deg);
+  opacity: 0;
+}
+
+/* the body sinks slightly and dissolves into the light, a beat later */
+#app[data-stage="tearing"] .pack__part--bottom {
+  transition: transform 620ms var(--ease-out), opacity 400ms ease 200ms;
+  transform: translateY(26px) scale(0.97);
+  opacity: 0;
+}
+
+/* the seam widens into the opening and burns out with it */
+#app[data-stage="tearing"] .pack__rip {
+  animation: seam-open 560ms ease-out forwards;
+}
+@keyframes seam-open {
+  0%   { opacity: 1; transform: scaleX(1) scaleY(2.6); }
+  35%  { opacity: 1; transform: scaleX(1.25) scaleY(9); }
+  100% { opacity: 0; transform: scaleX(1.4) scaleY(3); }
+}
+
+#app[data-stage="tearing"] .pack__cutter { opacity: 0; transition: opacity 180ms ease; }
+
+/* light floods out of the opening */
+#app[data-stage="tearing"] .pack-burst { animation: burst 620ms ease-out forwards; }
+@keyframes burst {
+  0%   { opacity: 0; transform: scale(0.15); }
+  40%  { opacity: 1; transform: scale(0.9); }
+  100% { opacity: 0; transform: scale(1.5); }
+}
+
+/* the ambience leaves too, so the screen is empty before the card lands.
+   The beam needs `animation: none` first: a running animation outranks a
+   normal declaration in the cascade, so its pulse would keep it lit while
+   everything else faded — leaving a stray shaft of light in empty space. */
+#app[data-stage="tearing"] .pack-beam { animation: none; }
+#app[data-stage="tearing"] .pack-beam,
+#app[data-stage="tearing"] .pack-halo,
+#app[data-stage="tearing"] .pack-shadow,
+#app[data-stage="tearing"] .hint {
+  opacity: 0;
+  transition: opacity 340ms ease;
+}
+
+/* ---------------------------------------------------------------------------
+   THE FOIL ARTWORK — the rendered pack, cut out of its background.
+   Everything the artwork already contains (crimped ends, serrated teeth,
+   folds, the gold compass) is baked in; the layers below only add the motion
+   a still image cannot have.
+   ------------------------------------------------------------------------- */
+.pack__face {
+  position: absolute;
+  inset: 0;
+  /* The artwork has a transparent background, so a plain rectangular sheen
+     would glow in the empty corners and give away the box. Masking the face
+     with the artwork's own alpha confines every overlay to the pack shape. */
+  -webkit-mask-image: url(../assets/pack.png);
+  mask-image: url(../assets/pack.png);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.pack__img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: fill;
+  -webkit-user-drag: none;
+}
+
+/* the slow travelling highlight, layered over the artwork so the foil looks
+   like it is catching light in real time */
+.pack__sheen {
+  position: absolute;
+  inset: -30%;
+  mix-blend-mode: screen;
+  opacity: 0.45;
+  background: linear-gradient(112deg,
+    transparent 42%, rgba(226, 210, 255, 0.34) 50%, transparent 58%);
+  animation: sweep 5.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes sweep {
+  0%   { transform: translateX(-55%); }
+  100% { transform: translateX(55%); }
+}
+
+/* a faint warm bloom around the emblem, so the star reads as lit */
+.pack__gloss {
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: screen;
+  background: radial-gradient(26% 16% at 50% 46%, rgba(255, 220, 150, 0.18), transparent 70%);
+  pointer-events: none;
+}
+
+@media (max-width: 700px) {
+  .pack { width: 204px; height: 363px; }
+  .pack-halo { width: 280px; height: 280px; }
+}

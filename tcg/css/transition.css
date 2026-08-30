@@ -1,0 +1,48 @@
+/* ============================================================================
+   transition.css — the "blink": black bars close in from top and bottom,
+   a star flashes, then the bars retract onto the profile page.
+   ========================================================================== */
+
+.blink {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.blink__bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 0;
+  background: #000;
+  /* nothing animates until the .is-closing / .is-opening classes go on */
+}
+.blink__bar--top { top: 0; }
+.blink__bar--bottom { bottom: 0; }
+
+.blink__star {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 2.4rem;
+  color: var(--gold);
+  opacity: 0;
+}
+
+/* eyes closing */
+.blink.is-closing .blink__bar { animation: bars-in 380ms ease-in forwards; }
+.blink.is-closing .blink__star { animation: star-flash 420ms ease-out forwards; }
+
+/* eyes opening again, now on the new screen */
+.blink.is-opening .blink__bar { animation: bars-out 520ms var(--ease-out) forwards; }
+
+@keyframes bars-in  { from { height: 0; }   to { height: 52%; } }
+@keyframes bars-out { from { height: 52%; } to { height: 0; } }
+
+@keyframes star-flash {
+  0%   { opacity: 0; transform: scale(0.2); }
+  45%  { opacity: 1; transform: scale(1.25); }
+  100% { opacity: 0; transform: scale(1.9); }
+}

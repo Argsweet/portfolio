@@ -1,0 +1,194 @@
+/* ============================================================================
+   about.css — the "nice to meet you" page.
+   Left: portrait inside an ornate frame, sitting in orbit rings.
+   Right: kicker, display headline, story, then two labelled blocks.
+   ========================================================================== */
+
+/* overflow-x: the decorative orbit rings deliberately hang outside the
+   portrait box; clipping them here stops that from creating a scrollbar */
+.view--about { padding: 1.5rem 2.4rem 3rem; overflow-x: hidden; }
+
+.about {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.95fr) minmax(0, 1fr);
+  gap: 3.5rem;
+  align-items: center;
+  min-height: 100%;
+  max-width: 1180px;
+}
+
+/* ---------------------------------------------------------------------------
+   LEFT: portrait
+   ------------------------------------------------------------------------- */
+.about__portrait {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 2.5rem;
+  animation: fade 700ms ease both;
+}
+
+/* two faint orbit rings, one dashed — the constellation motif again */
+.about__rings {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.about__rings::before,
+.about__rings::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(243, 207, 122, 0.16);
+}
+.about__rings::before {
+  inset: 2%;
+  border-style: solid;
+  animation: spin 90s linear infinite;
+}
+.about__rings::after {
+  inset: 14% -6% -2% 8%;
+  border-style: dashed;
+  border-color: rgba(200, 160, 255, 0.16);
+  animation: spin 120s linear infinite reverse;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* the gold picture frame: an outer hairline offset from an inner one */
+.about__frame {
+  position: relative;
+  width: 100%;
+  max-width: 330px;
+  aspect-ratio: 3 / 3.7;
+  background:
+    linear-gradient(160deg, rgba(60, 45, 95, 0.7), rgba(10, 8, 20, 0.9));
+  border: 1px solid rgba(243, 207, 122, 0.55);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.about__frame::before {
+  content: "";
+  position: absolute;
+  inset: -11px;
+  border: 1px solid rgba(243, 207, 122, 0.35);
+  /* cut the top corners so the outer frame reads as angular, like the mockup */
+  clip-path: polygon(
+    16px 0, calc(100% - 16px) 0, 100% 16px,
+    100% 100%, 0 100%, 0 16px
+  );
+  pointer-events: none;
+}
+.about__frame img { width: 100%; height: 100%; object-fit: cover; }
+
+/* the placeholder shown until a real photo is dropped in */
+.about__placeholder {
+  display: grid;
+  place-items: center;
+  gap: 0.9rem;
+  text-align: center;
+  color: var(--ink-25);
+  font-size: 0.58rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+.about__placeholder svg { width: 62px; height: 62px; opacity: 0.5; }
+
+/* the compass ornament overlapping the bottom-left of the frame */
+.about__star {
+  position: absolute;
+  left: 4%;
+  bottom: 12%;
+  width: 92px;
+  height: 92px;
+  background:
+    radial-gradient(circle, rgba(255, 235, 190, 0.9) 0 2px, transparent 3px),
+    conic-gradient(from 0deg,
+      transparent 0 42deg, rgba(255, 226, 170, 0.55) 45deg, transparent 48deg 132deg,
+      rgba(255, 226, 170, 0.55) 135deg, transparent 138deg 222deg,
+      rgba(255, 226, 170, 0.55) 225deg, transparent 228deg 312deg,
+      rgba(255, 226, 170, 0.55) 315deg, transparent 318deg);
+  border-radius: 50%;
+  filter: drop-shadow(0 0 16px rgba(243, 207, 122, 0.6));
+  opacity: 0.9;
+}
+
+/* ---------------------------------------------------------------------------
+   RIGHT: the story
+   ------------------------------------------------------------------------- */
+.about__text { max-width: 560px; animation: fade 800ms ease both; }
+
+.about__kicker {
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.about__headline {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  margin-top: 0.7rem;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 5vw, 4rem);
+  line-height: 1.05;
+}
+.about__headline .mark { font-size: 1.1rem; margin-top: 0.6rem; }
+
+.about__divider {
+  height: 1px;
+  width: 260px;
+  margin: 1.4rem 0 1.6rem;
+  background: linear-gradient(90deg, var(--accent), rgba(243, 207, 122, 0.5), transparent);
+}
+
+.about__text p.lead {
+  font-size: 0.95rem;
+  line-height: 1.85;
+  color: var(--ink-70);
+  font-weight: 300;
+  margin-bottom: 1.1rem;
+}
+
+.about__blocks { margin-top: 1.4rem; display: grid; gap: 1.1rem; }
+.about__block {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 1.1rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--line-soft);
+}
+.about__badge {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px dashed rgba(243, 207, 122, 0.4);
+  color: var(--gold);
+}
+.about__badge svg { width: 22px; height: 22px; }
+.about__block h3 {
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+.about__block p {
+  font-size: 0.86rem;
+  line-height: 1.75;
+  color: var(--ink-70);
+  font-weight: 300;
+}
+
+@media (max-width: 980px) {
+  .about { grid-template-columns: 1fr; gap: 2rem; }
+  .about__portrait { padding: 1.5rem; }
+  .about__frame { max-width: 260px; }
+  .about__star { width: 66px; height: 66px; }
+}
