@@ -35,6 +35,7 @@ export const CARDS = {
     art: "assets/photo/data.jpg",
     artFit: "cover",
     artFallback: "assets/art/data.svg",
+    resumePdf: "assets/docs/resume-data.pdf",
     stats: [
       { label: "Analytical Thinking", value: 92 },
       { label: "Statistics", value: 88 },
@@ -89,6 +90,7 @@ export const CARDS = {
     art: "assets/photo/software.jpg",
     artFit: "cover",
     artFallback: "assets/art/software.svg",
+    resumePdf: "assets/docs/resume-software.pdf",
     stats: [
       { label: "Frontend", value: 88 },
       { label: "Debugging", value: 86 },
@@ -192,6 +194,7 @@ export const CARDS = {
     art: "assets/photo/leadership.jpg",
     artFit: "cover",
     artFallback: "assets/art/leadership.svg",
+    resumePdf: "assets/docs/resume-leadership.pdf",
     stats: [
       { label: "Organizing", value: 91 },
       { label: "Outreach", value: 87 },
