@@ -51,20 +51,23 @@
               opacity 160ms ease, background 300ms linear;
 }
 
-/* the ring lags behind the dot (js eases it), which is what makes the pair
-   read as a single object with weight rather than two stuck dots */
+/* The ring belongs to the hover state only — at rest the arrow is the whole
+   cursor. It still lags behind (js eases it), which is what makes it feel
+   like it catches up to the pointer when it appears. */
 .cursor__ring {
   width: 22px;
   height: 22px;
+  opacity: 0;
   border: 1px solid color-mix(in srgb, var(--accent, #c9a3ff) 35%, transparent);
   transition: width 240ms var(--ease-out), height 240ms var(--ease-out),
-              border-color 240ms ease, background 240ms ease;
+              opacity 180ms ease, border-color 240ms ease, background 240ms ease;
 }
 
 /* --- over something clickable -------------------------------------------- */
 .cursor.is-hover .cursor__ring {
   width: 42px;
   height: 42px;
+  opacity: 1;
   border-color: var(--accent-2, #f3cf7a);
   background: color-mix(in srgb, var(--accent, #c9a3ff) 12%, transparent);
 }
@@ -73,7 +76,7 @@
 .cursor.is-hover .cursor__arrow { opacity: 0; }
 
 /* --- pressed ------------------------------------------------------------- */
-.cursor.is-down .cursor__ring { width: 20px; height: 20px; }
+.cursor.is-hover.is-down .cursor__ring { width: 30px; height: 30px; }
 .cursor.is-down .cursor__dot { width: 10px; height: 10px; }
 .cursor.is-down .cursor__arrow { transform-origin: 0 0; }
 
