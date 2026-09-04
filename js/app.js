@@ -13,7 +13,7 @@ import { makeDraggable } from "./drag.js";
 import { startStarfield } from "./starfield.js";
 import { updateRadar } from "./radar.js";
 import { renderConstellation, renderProjectDetail, lightEdges } from "./constellation.js";
-import { compass, NAV_ICONS, ABOUT_ICONS, SOCIAL_ICONS } from "./icons.js";
+import { NAV_ICONS, ABOUT_ICONS, SOCIAL_ICONS } from "./icons.js";
 import { initCursor } from "./cursor.js";
 
 /* ---------------------------------------------------------------------------
@@ -186,7 +186,7 @@ function blinkTo(swapScreens) {
    ------------------------------------------------------------------------- */
 function renderSidebar() {
   $("sidebar").innerHTML = `
-    <div class="sidebar__logo">${compass(44)}</div>
+    <div class="sidebar__logo"><img src="assets/star.png" alt="" width="44" height="44"/></div>
     <div class="sidebar__nav">
       ${NAV.map(
         (n) => `

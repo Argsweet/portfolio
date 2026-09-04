@@ -50,6 +50,8 @@
   animation: core-pulse 6s ease-in-out infinite;
   pointer-events: none;
 }
+.sky__core img { width: 150px; height: 150px; display: block; }
+
 @keyframes core-pulse {
   0%, 100% { opacity: 0.85; transform: translate(-50%, -50%) scale(1); }
   50%      { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }

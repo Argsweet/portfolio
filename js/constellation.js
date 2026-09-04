@@ -13,7 +13,7 @@
    though the viewBox is being stretched.
    ========================================================================== */
 
-import { PROJECT_ICONS, compass } from "./icons.js";
+import { PROJECT_ICONS } from "./icons.js";
 
 const CENTER = { x: 0.5, y: 0.47 };
 
@@ -140,7 +140,7 @@ export function renderConstellation(projects, selectedIndex, aspect = 1.35) {
     <svg class="sky" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
       ${edges}${sparkles()}
     </svg>
-    <div class="sky__core" aria-hidden="true">${compass(96)}</div>
+    <div class="sky__core" aria-hidden="true"><img src="assets/star.png" alt="" width="150" height="150"/></div>
     ${nodes}`;
 }
 

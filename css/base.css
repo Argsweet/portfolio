@@ -267,6 +267,7 @@ a.btn { text-decoration: none; }
   margin-bottom: 2rem;
   filter: drop-shadow(0 0 14px rgba(243, 207, 122, 0.45));
 }
+.sidebar__logo img { width: 44px; height: 44px; display: block; }
 
 .sidebar__nav { display: flex; flex-direction: column; width: 100%; }
 

@@ -6,8 +6,9 @@
    them per card theme. That is the whole reason not to use PNGs here.
    ========================================================================== */
 
-/** The house mark: an 8-point compass star. Used in the sidebar, on the pack,
- *  in the constellation, and as a divider ornament. */
+/** The house mark, drawn as vectors. Superseded by assets/star.png, which is
+ *  the real artwork — kept because it needs no image request and re-tints with
+ *  currentColor, so it is here if a small inline star is ever wanted. */
 export const compass = (size = 24) => `
 <svg viewBox="0 0 100 100" width="${size}" height="${size}" fill="none" aria-hidden="true">
   <defs>
