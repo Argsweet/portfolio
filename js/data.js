@@ -144,6 +144,8 @@ export const CARDS = {
     art: "assets/photo/research.jpg",
     artFit: "cover",
     artFallback: "assets/art/research.svg",
+    // the "View full resume" button opens this instead of the timeline
+    resumePdf: "assets/docs/resume-research.pdf",
     stats: [
       { label: "Study Design", value: 85 },
       { label: "Statistical Inference", value: 89 },

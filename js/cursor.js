@@ -34,7 +34,19 @@ export function initCursor() {
   const root = document.createElement("div");
   root.className = "cursor";
   root.setAttribute("aria-hidden", "true");
-  root.innerHTML = `<span class="cursor__ring"></span><span class="cursor__dot"></span>`;
+  // The resting state is an arrow, because a bare dot gives you nothing to
+  // point WITH — the tip is the whole affordance of a cursor. Over something
+  // clickable it hands off to the diamond + ring, which is a target rather
+  // than a pointer. The arrow's tip sits exactly on the pointer coordinate,
+  // so it is the one part that gets no -50% centering.
+  root.innerHTML = `
+    <span class="cursor__ring"></span>
+    <span class="cursor__dot"></span>
+    <svg class="cursor__arrow" viewBox="0 0 15 20" width="15" height="20">
+      <path d="M0 0 L0 17 L4.4 12.9 L7.3 19 L10.2 17.6 L7.2 11.6 L13.2 11.4 Z"
+            fill="var(--accent-2, #f3cf7a)"
+            stroke="rgba(6, 4, 16, 0.75)" stroke-width="1" stroke-linejoin="round"/>
+    </svg>`;
 
   const fx = document.createElement("div");
   fx.className = "cursor-fx";
@@ -45,6 +57,7 @@ export function initCursor() {
 
   const dot = root.querySelector(".cursor__dot");
   const ring = root.querySelector(".cursor__ring");
+  const arrow = root.querySelector(".cursor__arrow");
 
   let x = innerWidth / 2, y = innerHeight / 2;   // where the pointer is
   let rx = x, ry = y;                            // where the ring has got to
@@ -135,6 +148,7 @@ export function initCursor() {
     rx += (x - rx) * RING_EASE;      // the lag is the whole character of it
     ry += (y - ry) * RING_EASE;
     dot.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%) rotate(45deg)`;
+    arrow.style.transform = `translate(${x}px, ${y}px)`;   // tip on the point
     ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%) rotate(45deg)`;
     requestAnimationFrame(frame);
   }

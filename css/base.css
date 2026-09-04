@@ -313,7 +313,6 @@ a.btn { text-decoration: none; }
   align-items: center;
   color: var(--ink-25);
 }
-.sidebar__foot a,
 .sidebar__foot button {
   background: none;
   border: none;
@@ -322,10 +321,8 @@ a.btn { text-decoration: none; }
   padding: 0.35rem;
   transition: color 200ms;
 }
-.sidebar__foot a:hover,
 .sidebar__foot button:hover { color: var(--accent-2); }
 .sidebar__foot button[disabled] { opacity: 0.4; cursor: default; }
-.sidebar__foot a { display: grid; place-items: center; text-decoration: none; }
 .sidebar__foot svg { width: 17px; height: 17px; }
 
 /* ---------------------------------------------------------------------------
@@ -422,9 +419,6 @@ a.btn { text-decoration: none; }
     transition-duration: 0.01ms !important;
   }
 }
-
-/* "dim the glow" toggle in the sidebar footer — one class, whole-page effect */
-#app.is-dim { filter: saturate(0.85) brightness(0.82); }
 
 /* ---------------------------------------------------------------------------
    SOCIAL LINKS — bottom-right corner of the site.

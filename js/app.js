@@ -197,18 +197,6 @@ function renderSidebar() {
       ).join("")}
     </div>
     <div class="sidebar__foot">
-      <button id="dimBtn" title="Dim the glow" aria-label="Dim the glow">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
-             stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20 14.4A8.4 8.4 0 0 1 9.6 4 8.4 8.4 0 1 0 20 14.4Z"/>
-        </svg>
-      </button>
-      <a href="home.html" title="Classic site" aria-label="Classic site">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
-             stroke-linecap="round" stroke-linejoin="round">
-          <path d="M4.6 10.4 12 4.4l7.4 6v8.2a1 1 0 0 1-1 1h-4.2v-5.2H9.8v5.2H5.6a1 1 0 0 1-1-1Z"/>
-        </svg>
-      </a>
       <button disabled title="Sound: coming soon" aria-label="Sound: coming soon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
              stroke-linecap="round" stroke-linejoin="round">
@@ -269,6 +257,9 @@ function renderProfileView() {
   $("detailAbout").textContent = c.about;
   $("detailSkills").innerHTML = c.skills.map((s) => `<li>${s}</li>`).join("");
   $("detailResume").innerHTML = renderTimelineItems(c.resume);
+  $("resumeBtn").innerHTML = c.resumePdf
+    ? `View full resume <span aria-hidden="true">↗</span>`
+    : `View full timeline <span aria-hidden="true">→</span>`;
   // morphs the existing hexagon toward the new numbers instead of rebuilding it
   updateRadar($("detailRadar"), c.stats);
 }
@@ -418,7 +409,6 @@ $("tabs").addEventListener("click", (e) => {
 });
 
 $("sidebar").addEventListener("click", (e) => {
-  if (e.target.closest("#dimBtn")) return app.classList.toggle("is-dim");
   const btn = e.target.closest("[data-nav]");
   if (btn) setView(btn.dataset.nav);
 });
@@ -433,7 +423,13 @@ $("gallery").addEventListener("click", (e) => {
   if (fig) changeTab(fig.dataset.tabJump);
 });
 
-$("resumeBtn").addEventListener("click", () => setView("timeline"));
+/* A card with its own resume PDF opens it; the rest fall through to the
+   timeline, which is the whole history in one place. */
+$("resumeBtn").addEventListener("click", () => {
+  const pdf = CARDS[state.tab].resumePdf;
+  if (pdf) window.open(pdf, "_blank", "noopener");
+  else setView("timeline");
+});
 
 /* ---------------------------------------------------------------------------
    7. BOOT
