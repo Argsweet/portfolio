@@ -1,0 +1,132 @@
+/* ============================================================================
+   cursor.css — the look of the custom cursor.
+
+   Everything here is transform/opacity only, and every colour comes from the
+   card theme variables, so the cursor re-tints with the active card.
+   The native cursor is only hidden once js/cursor.js has decided it is going
+   to replace it (it adds .has-custom-cursor), so a touch device or a
+   reduced-motion visitor is never left with no cursor at all.
+   ========================================================================== */
+
+.has-custom-cursor,
+.has-custom-cursor * {
+  cursor: none !important;
+}
+
+/* --- the cursor itself --------------------------------------------------- */
+.cursor {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 260ms ease;
+}
+.cursor.is-live { opacity: 1; }
+
+.cursor__dot,
+.cursor__ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  will-change: transform;
+}
+
+/* a small gold diamond — the same rotated-square motif as the timeline dots
+   and the constellation nodes */
+.cursor__dot {
+  width: 7px;
+  height: 7px;
+  background: var(--accent-2, #f3cf7a);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent-2, #f3cf7a) 80%, transparent);
+  transition: width 200ms var(--ease-out), height 200ms var(--ease-out),
+              background 300ms linear;
+}
+
+/* the ring lags behind the dot (js eases it), which is what makes the pair
+   read as a single object with weight rather than two stuck dots */
+.cursor__ring {
+  width: 26px;
+  height: 26px;
+  border: 1px solid color-mix(in srgb, var(--accent, #c9a3ff) 55%, transparent);
+  transition: width 240ms var(--ease-out), height 240ms var(--ease-out),
+              border-color 240ms ease, background 240ms ease;
+}
+
+/* --- over something clickable -------------------------------------------- */
+.cursor.is-hover .cursor__ring {
+  width: 42px;
+  height: 42px;
+  border-color: var(--accent-2, #f3cf7a);
+  background: color-mix(in srgb, var(--accent, #c9a3ff) 12%, transparent);
+}
+.cursor.is-hover .cursor__dot { width: 4px; height: 4px; }
+
+/* --- pressed ------------------------------------------------------------- */
+.cursor.is-down .cursor__ring { width: 20px; height: 20px; }
+.cursor.is-down .cursor__dot { width: 10px; height: 10px; }
+
+/* ---------------------------------------------------------------------------
+   PARTICLES
+   ------------------------------------------------------------------------- */
+.cursor-fx {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.spark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--size, 3px);
+  height: var(--size, 3px);
+  background: color-mix(in srgb, var(--accent, #c9a3ff) 85%, white);
+  transform: translate(var(--x), var(--y)) translate(-50%, -50%) rotate(45deg);
+  animation: spark-out var(--life, 700ms) var(--ease-out, ease-out) forwards;
+}
+.spark--gold {
+  background: var(--accent-2, #f3cf7a);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--accent-2, #f3cf7a) 70%, transparent);
+}
+
+@keyframes spark-out {
+  0% {
+    opacity: 0.9;
+    transform: translate(var(--x), var(--y)) translate(-50%, -50%) rotate(45deg) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(var(--x) + var(--dx)), calc(var(--y) + var(--dy)))
+               translate(-50%, -50%) rotate(135deg) scale(0.2);
+  }
+}
+
+/* --- click ripple: the same cut-corner square, expanding ----------------- */
+.ripple {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--accent-2, #f3cf7a);
+  animation: ripple-out 520ms var(--ease-out, ease-out) forwards;
+}
+
+@keyframes ripple-out {
+  0% {
+    opacity: 0.85;
+    transform: translate(var(--x), var(--y)) translate(-50%, -50%) rotate(45deg) scale(0.4);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--x), var(--y)) translate(-50%, -50%) rotate(45deg) scale(4.6);
+  }
+}
+
+/* nothing to replace on a touch screen */
+@media (hover: none), (pointer: coarse) {
+  .cursor, .cursor-fx { display: none; }
+}

@@ -14,6 +14,7 @@ import { startStarfield } from "./starfield.js";
 import { updateRadar } from "./radar.js";
 import { renderConstellation, renderProjectDetail, lightEdges } from "./constellation.js";
 import { compass, NAV_ICONS, ABOUT_ICONS, SOCIAL_ICONS } from "./icons.js";
+import { initCursor } from "./cursor.js";
 
 /* ---------------------------------------------------------------------------
    1. STATE — every screen is a pure function of these values.
@@ -34,10 +35,15 @@ function setStage(next) {
   app.dataset.stage = next;
 }
 
-/** Point the CSS color variables at a card. One call = the whole site retints. */
+/** Point the CSS color variables at a card. One call = the whole site retints.
+ *  They go on <html> as well as #app because the custom cursor and its
+ *  particles live outside #app (they must, to stay clear of its overflow and
+ *  filter), and they still need to pick up the active card's colors. */
 function applyTheme(key) {
-  app.style.setProperty("--accent", CARDS[key].accent);
-  app.style.setProperty("--accent-2", CARDS[key].accent2);
+  for (const el of [app, document.documentElement]) {
+    el.style.setProperty("--accent", CARDS[key].accent);
+    el.style.setProperty("--accent-2", CARDS[key].accent2);
+  }
 }
 
 /* ---------------------------------------------------------------------------
@@ -433,6 +439,7 @@ $("resumeBtn").addEventListener("click", () => setView("timeline"));
    7. BOOT
    ------------------------------------------------------------------------- */
 startStarfield($("starfield"));
+initCursor();
 applyTheme(state.tab);
 
 // Deep link: #profile / #projects / #about ... skips the pack. Handy while
