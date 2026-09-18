@@ -14,13 +14,20 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.card { perspective: 1200px; }
+/* The wrapper carries the size. A block-level box with `width: auto` fills its
+   container, which beats aspect-ratio — but as a flex item with a definite
+   height, the ratio decides the width, which is what we want. */
+.card {
+  perspective: 1200px;
+  height: min(540px, 66vh);
+  aspect-ratio: var(--card-ratio);
+}
 
 .card__frame {
   --cut: 22px;
   position: relative;
-  width: 290px;
-  height: 418px;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   /* the angular silhouette: two corners sliced off */
   clip-path: polygon(

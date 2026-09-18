@@ -34,6 +34,11 @@
 
   /* how big a corner gets cut off. The single knob for "how angular is this" */
   --cut: 14px;
+
+  /* Every card shape derives from this: it is the proportion of the card
+     artwork itself (1060x1850), so the illustrations fit with no cropping
+     and the photographs are cut to match rather than the other way round. */
+  --card-ratio: 1060 / 1850;
 }
 
 @property --accent   { syntax: "<color>"; inherits: true; initial-value: #c9a3ff; }
