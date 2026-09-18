@@ -437,7 +437,8 @@ export const NAV = [
 export const ABOUT = {
   kicker: "Nice to meet you!",
   headline: "I'm Annabelle.",
-  photo: "assets/photo/data.jpg", // empty would render the placeholder frame instead
+  // the real photograph, kept for About while the cards carry the illustrations
+  photo: "assets/photo/portrait.jpg",
   paragraphs: [
     "I'm a Data Science student at UC San Diego passionate about using technology, creativity, and data to create meaningful impact. My interests span software engineering, machine learning, neuroscience, and human-centered design, and I'm always excited by opportunities to learn, build, and collaborate.",
   ],
